@@ -1,5 +1,5 @@
 {
-  "name": "tailor",
+  "name": "tailor-apps",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -10,12 +10,35 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-native-community/datetimepicker": "^6.2.0",
+    "@react-navigation/bottom-tabs": "^6.3.1",
+    "@react-navigation/drawer": "^6.4.2",
+    "@react-navigation/material-top-tabs": "^6.2.1",
+    "@react-navigation/native-stack": "^6.6.2",
+    "@rneui/base": "^4.0.0-rc.5",
+    "@rneui/themed": "^4.0.0-rc.5",
     "expo": "~45.0.0",
+    "expo-firebase-recaptcha": "~2.2.0",
+    "expo-splash-screen": "~0.15.1",
     "expo-status-bar": "~1.3.0",
+    "firebase": "^9.9.0",
+    "native-base": "^3.4.9",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-hook-form": "^7.33.1",
     "react-native": "0.68.2",
-    "react-native-web": "0.17.7"
+    "react-native-gesture-handler": "~2.2.1",
+    "react-native-pager-view": "5.4.15",
+    "react-native-paper": "^4.12.2",
+    "react-native-reanimated": "~2.8.0",
+    "react-native-safe-area-context": "4.2.4",
+    "react-native-screens": "~3.11.1",
+    "react-native-svg": "12.3.0",
+    "react-native-tab-view": "^3.1.1",
+    "react-native-uuid": "^2.0.1",
+    "react-native-web": "0.17.7",
+    "react-native-webview": "11.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
