@@ -10,9 +10,8 @@ import {
 } from "react-native";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import { firebaseConfig } from "../../../firebase/firebase-config";
-import firebase from "firebase/compat/app";
-// import { getAuth } from "firebase/auth";
-
+import { auth } from "../../../firebase/firebase-config";
+import { PhoneAuthProvider } from "firebase/auth";
 export default function SignUp({ navigation }) {
   const recaptchaVerifier = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState();
@@ -26,8 +25,8 @@ export default function SignUp({ navigation }) {
 
   const sendCode = async () => {
     try {
-      const phoneProvider = new firebase.auth.PhoneAuthProvider();
-      const verificationId = await phoneProvider.verifyPhoneNumber(
+      const provider = new PhoneAuthProvider(auth);
+      const verificationId = await provider.verifyPhoneNumber(
         phoneNumber,
         recaptchaVerifier.current
       );
@@ -78,7 +77,7 @@ export default function SignUp({ navigation }) {
         onPress={() => {
           sendCode();
         }}
-        // onPress={() => navigation.navigate("ConfirmCode", verificationId)}
+        // onPress={() => navigation.navigate("ConfirmCode", 1)}
       >
         <Text style={{ color: "white", alignSelf: "center" }}>Next</Text>
       </TouchableOpacity>

@@ -8,8 +8,12 @@ import {
   Platform,
 } from "react-native";
 import { firebaseConfig } from "../../../../firebase/firebase-config";
-import firebase from "firebase/compat/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from "react-native-uuid";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
+import { auth } from "../../../../firebase/firebase-config";
+import { db } from "../../../../firebase/firebase-config";
 
 export default function ConfirmCode({ navigation, route }) {
   const { verificationId, phoneNumber } = route.params;
@@ -23,26 +27,77 @@ export default function ConfirmCode({ navigation, route }) {
   );
   const confirmCode = async () => {
     try {
-      const credential = firebase.auth.PhoneAuthProvider.credential(
+      const credential = PhoneAuthProvider.credential(
         verificationId,
         verificationCode
       );
-      await firebase.auth().signInWithCredential(credential);
+      signInWithCredential(auth, credential);
       showMessage({ text: "Phone authentication successful 👍" });
+      const q = query(
+        collection(db, "users"),
+        where("phone_number", "==", "+923405102109")
+      );
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
+
+      let docs = querySnapshot.docs;
+      let Docid = docs.id;
+      docs = docs.map((e) => e.data());
+      console.log("Docid", Docid);
+
+      if (docs.length == 0) {
+        //if user not exist
+        const jsonValue = JSON.stringify(1);
+        const jsonValue2 = JSON.stringify(phoneNumber);
+        const jsonValue3 = JSON.stringify(uuid.v4());
+        await AsyncStorage.setItem("LoginState", jsonValue);
+        await AsyncStorage.setItem("phoneNumber", jsonValue2);
+        await AsyncStorage.setItem("id", jsonValue3);
+        navigation.navigate("EnterName");
+      } else {
+        // if user exist(tailor exist already)
+        const jsonValue = JSON.stringify(1);
+        const jsonValue2 = JSON.stringify(phoneNumber);
+
+        await AsyncStorage.setItem("LoginState", jsonValue);
+        await AsyncStorage.setItem("phoneNumber", jsonValue2);
+        await AsyncStorage.setItem("id", Docid);
+
+        navigation.navigate("HomeScreen");
+      }
     } catch (err) {
       showMessage({ text: `Error: ${err.message}`, color: "red" });
     }
-    try {
-      const jsonValue = JSON.stringify(1);
-      const jsonValue2 = JSON.stringify(phoneNumber);
+    // try {
+    //   const q = query(
+    //     collection(db, "users"),
+    //     where("phone_number", "==", phoneNumber)
+    //   );
+    //   const querySnapshot = await getDocs(q);
+    //   if (!querySnapshot) {
+    //     //if user not exist
+    //     const jsonValue = JSON.stringify(1);
+    //     const jsonValue2 = JSON.stringify(phoneNumber);
+    //     const jsonValue3 = JSON.stringify(uuid.v4());
+    //     await AsyncStorage.setItem("LoginState", jsonValue);
+    //     await AsyncStorage.setItem("phoneNumber", jsonValue2);
+    //     await AsyncStorage.setItem("id", jsonValue3);
+    //     navigation.navigate("EnterName");
+    //   } else {
+    //     //if user exist(tailor exist already)
+    //     const jsonValue = JSON.stringify(1);
+    //     const jsonValue2 = JSON.stringify(phoneNumber);
+    //     const jsonValue3 = JSON.stringify(uuid.v4());
 
-      await AsyncStorage.setItem("LoginState", jsonValue);
-      await AsyncStorage.setItem("phoneNumber", jsonValue2);
+    //     await AsyncStorage.setItem("LoginState", jsonValue);
+    //     await AsyncStorage.setItem("phoneNumber", jsonValue2);
+    //     await AsyncStorage.setItem("id", jsonValue3);
 
-      navigation.navigate("HomeScreen");
-    } catch (e) {
-      console.log("error in storing value of user loged in", e.message);
-    }
+    //     navigation.navigate("HomeScreen");
+    //   }
+    // } catch (e) {
+    //   console.log("error in storing value of user loged in", e.message);
+    // }
   };
 
   return (

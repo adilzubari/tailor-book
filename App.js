@@ -8,6 +8,7 @@ import ClientMeasurements from "./src/Screens/AddClient/ClientMeasurements";
 import ClientDressDetails from "./src/Screens/AddClient/ClientDressDetails";
 import AddClient from "./src/Screens/AddClient/AddClient";
 import ConfirmCode from "./src/Screens/SignUp/ConfirmCode/ConfirmCode";
+import EnterName from "./src/Screens/EnterName/EnterName";
 const Stack = createNativeStackNavigator();
 export default function App() {
   return (
@@ -67,6 +68,13 @@ export default function App() {
         <Stack.Screen
           name="AddClient"
           component={AddClient}
+          // options={{
+          //   headerShown: false,
+          // }}
+        />
+        <Stack.Screen
+          name="EnterName"
+          component={EnterName}
           // options={{
           //   headerShown: false,
           // }}
